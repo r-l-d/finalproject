@@ -8,7 +8,15 @@ import reduxPromise from "redux-promise";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { Provider } from "react-redux";
 import { init } from "./socket";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
 
+const theme = createMuiTheme({
+    palette: {
+        primary: { main: "#F44336" },
+        secondary: { main: "#36e7f4" }
+    }
+});
 const store = createStore(
     reducer,
     composeWithDevTools(applyMiddleware(reduxPromise))
@@ -22,7 +30,9 @@ if (location.pathname == "/welcome") {
     init(store);
     elem = (
         <Provider store={store}>
-            <App />
+            <ThemeProvider theme={theme}>
+                <App />
+            </ThemeProvider>
         </Provider>
     );
 }

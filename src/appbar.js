@@ -61,11 +61,11 @@ export default function MenuAppBar(props) {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static">
+            <AppBar color="primary" position="static">
                 <Toolbar>
                     <Typography variant="h5" className={classes.title}>
                         <Link color="inherit" underline="none" href="/">
-                            The Social Network
+                            Karaoke Roulette
                         </Link>
                     </Typography>
                     {props.auth && (

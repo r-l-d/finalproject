@@ -18,6 +18,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Friends from "./friends";
 import { Chat } from "./chat";
 import FriendRequest from "./friend-request";
+import Home from "./home";
 
 export default class App extends React.Component {
     constructor() {
@@ -89,21 +90,7 @@ export default class App extends React.Component {
 
                 <BrowserRouter>
                     <div>
-                        <Route
-                            exact
-                            path="/"
-                            render={() => (
-                                <Profile
-                                    first={this.state.first}
-                                    last={this.state.last}
-                                    imgUrl={this.state.imgUrl}
-                                    uploader={this.state.uploaderIsVisible}
-                                    bio={this.state.bio}
-                                    toggleModal={this.toggleModal}
-                                    refreshBio={this.refreshBio}
-                                />
-                            )}
-                        />
+                        <Route exact path="/" render={() => <Home />} />
                         <Route path="/users" render={() => <FindPeople />} />
                         <Route exact path="/chat" component={Chat} />
                         <Route
