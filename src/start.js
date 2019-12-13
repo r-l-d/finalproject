@@ -7,7 +7,6 @@ import { createStore, applyMiddleware } from "redux";
 import reduxPromise from "redux-promise";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { Provider } from "react-redux";
-import { init } from "./socket";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 
@@ -27,7 +26,6 @@ let elem;
 if (location.pathname == "/welcome") {
     elem = <Welcome />;
 } else {
-    init(store);
     elem = (
         <Provider store={store}>
             <ThemeProvider theme={theme}>

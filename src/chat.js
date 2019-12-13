@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import { socket } from "./socket";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -63,7 +62,6 @@ export function Chat() {
         if (e.key == "Enter") {
             // console.log("e.target.value: ", e.target.value);
             // console.log("e.key: ", e.key);
-            socket.emit("New Message", e.target.value);
             e.target.value = "";
         }
     };

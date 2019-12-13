@@ -6,45 +6,17 @@ const { hash, compare } = require("./utils/bc");
 const cookieSession = require("cookie-session");
 module.exports = app;
 const csurf = require("csurf");
-const multer = require("multer");
-const uidSafe = require("uid-safe");
-const path = require("path");
-const s3 = require("./s3");
-const { s3Url } = require("./config");
-const server = require("http").Server(app);
-const io = require("socket.io")(server, { origins: "localhost:8080" });
-
-const diskStorage = multer.diskStorage({
-    destination: function(req, file, callback) {
-        callback(null, __dirname + "/uploads");
-    },
-    filename: function(req, file, callback) {
-        uidSafe(24).then(function(uid) {
-            callback(null, uid + path.extname(file.originalname));
-        });
-    }
-});
-
-const uploader = multer({
-    storage: diskStorage,
-    limits: {
-        fileSize: 2097152
-    }
-});
 
 app.use(compression());
 app.use(express.static("./public"));
 app.use(express.json());
 
-const cookieSessionMiddleware = cookieSession({
-    secret: `I'm always angry.`,
-    maxAge: 1000 * 60 * 60 * 24 * 90
-});
-
-app.use(cookieSessionMiddleware);
-io.use(function(socket, next) {
-    cookieSessionMiddleware(socket.request, socket.request.res, next);
-});
+app.use(
+    cookieSession({
+        secret: `SPICY food is the best`,
+        maxAge: 1000 * 60 * 60 * 24 * 14
+    })
+);
 
 app.use(csurf());
 
@@ -134,32 +106,18 @@ app.get("/api/user/:id", async (req, res) => {
     }
 });
 
-app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
-    const imageUrl = `${s3Url}${req.file.filename}`;
-    const { userId } = req.session;
-    db.addImage(imageUrl, userId)
-        .then(() => {
-            res.json({
-                imgUrl: imageUrl
-            });
-        })
-        .catch(err => {
-            console.log(err);
-        });
-});
-
-app.post("/bio", async (req, res) => {
-    try {
-        const { userId } = req.session;
-        const { bio } = req.body;
-        await db.updateBio(bio, userId);
-        res.json({
-            bio: bio
-        });
-    } catch (err) {
-        console.log(err);
-    }
-});
+// app.post("/bio", async (req, res) => {
+//     try {
+//         const { userId } = req.session;
+//         const { bio } = req.body;
+//         await db.updateBio(bio, userId);
+//         res.json({
+//             bio: bio
+//         });
+//     } catch (err) {
+//         console.log(err);
+//     }
+// });
 
 app.get("/logout", function(req, res) {
     req.session.userId = null;
@@ -175,14 +133,14 @@ app.get("/api/users/:query", async (req, res) => {
     }
 });
 
-app.get("/api/users", async (req, res) => {
-    try {
-        let { rows } = await db.newUsers();
-        res.json(rows);
-    } catch (err) {
-        console.log(err);
-    }
-});
+// app.get("/api/users", async (req, res) => {
+//     try {
+//         let { rows } = await db.newUsers();
+//         res.json(rows);
+//     } catch (err) {
+//         console.log(err);
+//     }
+// });
 
 app.get("/friendshipstatus/:id", async (req, res) => {
     try {
@@ -279,75 +237,6 @@ app.get("*", function(req, res) {
     }
 });
 
-server.listen(8080, function() {
+app.listen(8080, function() {
     console.log("I'm listening.");
-});
-
-const onlineUsers = {};
-
-io.on("connection", function(socket) {
-    console.log(`socket with the id ${socket.id} is now connected`);
-
-    if (!socket.request.session.userId) {
-        return socket.disconnect(true);
-    }
-
-    const userId = socket.request.session.userId;
-    console.log("userId: ", userId);
-
-    onlineUsers[socket.id] = userId;
-    // console.log("userId after socket.id: ", userId);
-    console.log("onlineUsers: ", onlineUsers);
-
-    socket.on("New Friend Request", request => {
-        console.log("new friend request in index.js for id: ", request);
-        for (const socketId in onlineUsers) {
-            console.log("id is: ", onlineUsers[socketId]);
-            if (onlineUsers[socketId] == request) {
-                console.log("this user is online: ", onlineUsers[socketId]);
-                io.to(socketId).emit("friendRequest", true);
-            }
-        }
-    });
-
-    socket.on("disconnect", function() {
-        console.log(`socket with the id ${socket.id} is now disconnected`);
-        delete onlineUsers[socket.id];
-    });
-
-    //make a db query to get last 10 chat chatMessages
-    db.getLastTenChatMessages().then(data => {
-        // console.log("last 10 chat messages: ", data.rows);
-        io.sockets.emit("chatMessages", data.rows.reverse());
-    });
-
-    socket.on("New Message", msg => {
-        // console.log("msg on server: ", msg);
-        // console.log("userId: ", userId);
-        let newMsg = {
-            message: msg,
-            id: userId
-        };
-        db.addMessage(msg, userId)
-            .then(({ rows }) => {
-                // console.log("data back from new msg: ", rows);
-                newMsg.msg_id = rows[0].id;
-                newMsg.created_at = rows[0].created_at;
-                db.getUser(userId)
-                    .then(({ rows }) => {
-                        // console.log("rows from getuser: ", rows);
-                        newMsg.first = rows[0].first;
-                        newMsg.last = rows[0].last;
-                        newMsg.image_url = rows[0].image_url;
-                        // console.log("newMsg: ", newMsg);
-                        io.sockets.emit("chatMessage", newMsg);
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    });
 });

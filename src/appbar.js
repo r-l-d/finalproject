@@ -7,7 +7,6 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import ProfilePic from "./profile-pic";
 import Avatar from "@material-ui/core/Avatar";
 import Link from "@material-ui/core/Link";
 
@@ -113,12 +112,7 @@ export default function MenuAppBar(props) {
                                     aria-haspopup="true"
                                     onClick={handleMenu}
                                     color="inherit"
-                                >
-                                    <Avatar
-                                        src={props.imgUrl}
-                                        alt={props.first + " " + props.last}
-                                    />
-                                </IconButton>
+                                ></IconButton>
                                 <Menu
                                     id="menu-appbar"
                                     anchorEl={anchorEl}

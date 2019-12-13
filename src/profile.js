@@ -1,6 +1,4 @@
 import React from "react";
-import ProfilePic from "./profile-pic";
-import BioEditor from "./bio-editor";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -37,15 +35,6 @@ export default function Profile(props) {
                     <Typography className={classes.typography} variant="h4">
                         {props.first} {props.last}
                     </Typography>
-                    <ProfilePic
-                        first={props.first}
-                        last={props.last}
-                        imgUrl={props.imgUrl}
-                        toggleModal={props.toggleModal}
-                    />
-                </div>
-                <div className={classes.bioBox}>
-                    <BioEditor bio={props.bio} refreshBio={props.refreshBio} />
                 </div>
             </Container>
         </div>

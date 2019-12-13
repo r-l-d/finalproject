@@ -1,7 +1,5 @@
 import React from "react";
 import axios from "./axios";
-import ProfilePic from "./profile-pic";
-import Uploader from "./uploader";
 import Logo from "./logo";
 import Profile from "./profile";
 import MenuAppBar from "./appbar";
@@ -40,9 +38,7 @@ export default class App extends React.Component {
                 console.log("data: ", data);
                 this.setState({
                     first: data.first,
-                    last: data.last,
-                    imgUrl: data.image_url,
-                    bio: data.bio
+                    last: data.last
                 });
                 // console.log("this.state: ", this.state);
             })
@@ -81,10 +77,8 @@ export default class App extends React.Component {
         return (
             <div>
                 <MenuAppBar
-                    toggleModal={this.toggleModal}
                     firstname={this.state.first}
                     lastname={this.state.last}
-                    imgUrl={this.state.imgUrl}
                     auth={this.state.auth}
                 />
 
@@ -107,14 +101,7 @@ export default class App extends React.Component {
                     </div>
                 </BrowserRouter>
                 <FriendRequest />
-                {this.state.uploaderIsVisible && (
-                    <Dialog open={open}>
-                        <Uploader
-                            uploadImage={this.uploadImage}
-                            toggleModal={this.toggleModal}
-                        />
-                    </Dialog>
-                )}
+                {this.state.uploaderIsVisible && <Dialog open={open}></Dialog>}
             </div>
         );
     }

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "./axios";
 import Button from "@material-ui/core/Button";
-import { socket } from "./socket";
 
 export default function Friendshipbutton(props) {
     const [buttonText, setButtonText] = useState();
@@ -29,7 +28,6 @@ export default function Friendshipbutton(props) {
                         "new friend request received for: ",
                         props.otherId
                     );
-                    socket.emit("New Friend Request", props.otherId);
                 }
             });
     }
