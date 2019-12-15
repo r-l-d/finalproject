@@ -1,6 +1,9 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 export default function Video() {
+    const songs = useSelector(state => state && state.songs);
+
     return (
         <div>
             <iframe

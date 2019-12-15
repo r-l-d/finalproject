@@ -6,6 +6,7 @@ const { hash, compare } = require("./utils/bc");
 const cookieSession = require("cookie-session");
 module.exports = app;
 const csurf = require("csurf");
+const request = require("request");
 
 app.use(compression());
 app.use(express.static("./public"));
@@ -89,6 +90,47 @@ app.get("/user.json", async (req, res) => {
     } catch (err) {
         console.log(err);
     }
+});
+
+// app.get("/api/:query", async (req, res) => {
+//     try {
+//         let query = req.params.query;
+//         console.log("query: ", query);
+//         const options = {
+//             url: "https://www.googleapis.com/youtube/v3/search",
+//             method: "GET",
+//             headers: {
+//                 part: "snippet",
+//                 q: query,
+//                 key: "AIzaSyDr-b6KqRW4Qv5vWgFLiSRFTN38Y1B0eW4",
+//                 type: "video"
+//             }
+//         };
+//         const data = await request(options);
+//         console.log("data from youtube: ", data);
+//         res.json(data);
+//     } catch (err) {
+//         console.log(err);
+//     }
+// });
+
+app.get("/api/:query", function(req, res) {
+    let query = req.params.query;
+    console.log("query: ", query);
+    const options = {
+        url: "https://www.googleapis.com/youtube/v3/search",
+        method: "GET",
+        headers: {
+            part: "snippet",
+            q: query,
+            key: "AIzaSyDr-b6KqRW4Qv5vWgFLiSRFTN38Y1B0eW4",
+            type: "video"
+        }
+    };
+    console.log("options: ", options);
+    request(options, function(err, res, body) {
+        console.log("body: ", body);
+    });
 });
 
 app.get("/api/user/:id", async (req, res) => {

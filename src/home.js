@@ -39,21 +39,51 @@ export default function Home() {
     const classes = useStyles();
     const [users, setUsers] = useState([]);
     const [query, setQuery] = useState("");
+    const [songs, setSongs] = useState([]);
+    // const songs = useSelector(state => state && state.songs);
 
-    useEffect(() => {
-        let ignore = false;
-        (async () => {
-            console.log("query: ", query);
-            const { data } = await axios.get(`/api/users/${query}`);
-            if (!ignore) {
-                console.log("users data: ", data);
-                setUsers(data);
-            } else {
-                alert("Ignored!");
-            }
-        })();
-        return () => (ignore = true);
-    }, [query]);
+    // useEffect(() => {
+    //     let ignore = false;
+    //     (async () => {
+    //         console.log("query: ", query);
+    //         const { data } = await axios.get(`/api/users/${query}`);
+    //         if (!ignore) {
+    //             console.log("users data: ", data);
+    //             setUsers(data);
+    //         } else {
+    //             alert("Ignored!");
+    //         }
+    //     })();
+    //     return () => (ignore = true);
+    // }, [query]);
+
+    const keyCheck = e => {
+        if (e.key == "Enter") {
+            // console.log("e.target.value: ", e.target.value);
+            // console.log("e.key: ", e.key);
+            submit();
+            e.target.value = "";
+        }
+    };
+
+    async function submit() {
+        try {
+            console.log("clicked on the button: ", query);
+            const { data } = await axios.get(`/api/${query}`);
+            console.log("data in home.js: ", data);
+        } catch (err) {
+            console.log(err);
+        }
+        // .then(resp => {
+        //     setButtonText(resp.data.buttonText);
+        //     if (resp.data.buttonText == "Cancel Friend Request") {
+        //         console.log(
+        //             "new friend request received for: ",
+        //             props.otherId
+        //         );
+        //     }
+        // });
+    }
 
     if (!users) {
         return null;
@@ -70,9 +100,10 @@ export default function Home() {
                     label="Search"
                     variant="outlined"
                     onChange={e => setQuery(e.target.value)}
+                    onKeyUp={keyCheck}
                 />
+                <Button onClick={submit}>Go</Button>
                 <Video />
-                <div id="player"></div>
             </Container>
         </div>
     );
