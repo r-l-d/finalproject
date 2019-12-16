@@ -9,6 +9,23 @@ export async function receiveFriendsWannabes() {
     };
 }
 
+export async function getFavorites() {
+    const { data } = await axios.get("/favorites");
+    console.log("data from favorites action: ", data);
+    return {
+        type: "GET_FAVORITES",
+        favorites: data
+    };
+}
+
+export async function removeFavorite(id) {
+    await axios.post("/remove-favorite/" + id);
+    return {
+        type: "REMOVE_FAVORITE",
+        id
+    };
+}
+
 export async function acceptFriendRequest(id) {
     await axios.post("/update-friendship/" + id, {
         buttonText: "Accept Friend Request"

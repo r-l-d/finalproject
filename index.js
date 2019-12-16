@@ -238,6 +238,28 @@ app.get("/friends-wannabes", async (req, res) => {
     }
 });
 
+app.get("/favorites", async (req, res) => {
+    try {
+        const id = req.session.userId;
+        let { rows } = await db.getFavorites(id);
+        res.json(rows);
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+app.post("/remove-favorite/:id", async (req, res) => {
+    try {
+        const favorite_id = req.params.id;
+        await db.removeFavorite(favorite_id);
+        res.json({
+            notification: "Song Removed From Favorites"
+        });
+    } catch (err) {
+        console.log(err);
+    }
+});
+
 app.get("/other-friends/:id", async (req, res) => {
     try {
         const otherId = req.params.id;

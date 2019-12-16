@@ -6,6 +6,26 @@ export default function reducer(state = {}, action) {
         };
     }
 
+    if (action.type == "GET_FAVORITES") {
+        state = {
+            ...state,
+            favorites: action.favorites
+        };
+    }
+
+    if (action.type == "REMOVE_FAVORITE") {
+        state = {
+            ...state,
+            favorites: state.favorites.filter(favorite => {
+                if (favorite.id == action.id) {
+                    return false;
+                } else {
+                    return true;
+                }
+            })
+        };
+    }
+
     if (action.type == "ACCEPT_FRIEND") {
         state = {
             ...state,

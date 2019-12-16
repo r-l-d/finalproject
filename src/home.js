@@ -17,6 +17,7 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Video from "./video";
 import { MoreResults } from "./more-results";
+import Favorites from "./favorites";
 
 const useStyles = makeStyles({
     card: {
@@ -109,6 +110,7 @@ export default function Home() {
                 <Button onClick={submit}>Go</Button>
                 {videoId && <Video videoId={videoId} />}
                 {songs.length && <MoreResults results={songs} />}
+                <Favorites />
             </Container>
         </div>
     );

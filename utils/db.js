@@ -19,6 +19,13 @@ exports.getUser = function getUser(id) {
     return db.query("SELECT first, last FROM users WHERE id=$1", [id]);
 };
 
+exports.getFavorites = function getFavorites(id) {
+    return db.query("SELECT * FROM favorites WHERE user_id=$1", [id]);
+};
+
+exports.removeFavorite = function removeFavorite(id) {
+    return db.query("DELETE FROM favorites WHERE id=$1", [id]);
+};
 // exports.addImage = function addImage(url, id) {
 //     return db.query("UPDATE users SET image_url=$1  WHERE id=$2", [url, id]);
 // };
