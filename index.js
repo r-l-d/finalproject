@@ -37,6 +37,13 @@ if (process.env.NODE_ENV != "production") {
     app.use("/bundle.js", (req, res) => res.sendFile(`${__dirname}/bundle.js`));
 }
 
+let secrets;
+if (process.env.NODE_ENV == "production") {
+    secrets = process.env; // in prod the secrets are environment variables
+} else {
+    secrets = require("./secrets"); // in dev they are in secrets.json which is listed in .gitignore
+}
+
 app.get("/welcome", function(req, res) {
     if (req.session.userId) {
         res.redirect("/");
@@ -92,44 +99,24 @@ app.get("/user.json", async (req, res) => {
     }
 });
 
-// app.get("/api/:query", async (req, res) => {
-//     try {
-//         let query = req.params.query;
-//         console.log("query: ", query);
-//         const options = {
-//             url: "https://www.googleapis.com/youtube/v3/search",
-//             method: "GET",
-//             headers: {
-//                 part: "snippet",
-//                 q: query,
-//                 key: "AIzaSyDr-b6KqRW4Qv5vWgFLiSRFTN38Y1B0eW4",
-//                 type: "video"
-//             }
-//         };
-//         const data = await request(options);
-//         console.log("data from youtube: ", data);
-//         res.json(data);
-//     } catch (err) {
-//         console.log(err);
-//     }
-// });
-
 app.get("/api/:query", function(req, res) {
     let query = req.params.query;
     console.log("query: ", query);
     const options = {
         url: "https://www.googleapis.com/youtube/v3/search",
-        method: "GET",
-        headers: {
+        qs: {
             part: "snippet",
             q: query,
-            key: "AIzaSyDr-b6KqRW4Qv5vWgFLiSRFTN38Y1B0eW4",
-            type: "video"
+            key: secrets.API_KEY,
+            videoEmbeddable: "true",
+            type: "video",
+            videoSyndicated: "true"
         }
     };
     console.log("options: ", options);
-    request(options, function(err, res, body) {
+    request(options, function(err, response, body) {
         console.log("body: ", body);
+        res.json(JSON.parse(body));
     });
 });
 

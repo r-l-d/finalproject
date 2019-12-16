@@ -16,6 +16,7 @@ import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Video from "./video";
+import { MoreResults } from "./more-results";
 
 const useStyles = makeStyles({
     card: {
@@ -40,6 +41,7 @@ export default function Home() {
     const [users, setUsers] = useState([]);
     const [query, setQuery] = useState("");
     const [songs, setSongs] = useState([]);
+    const [videoId, setVideoId] = useState("");
     // const songs = useSelector(state => state && state.songs);
 
     // useEffect(() => {
@@ -70,7 +72,9 @@ export default function Home() {
         try {
             console.log("clicked on the button: ", query);
             const { data } = await axios.get(`/api/${query}`);
-            console.log("data in home.js: ", data);
+            // console.log("data in home.js: ", data.items[0].id.videoId);
+            setVideoId(data.items[0].id.videoId);
+            setSongs(data.items);
         } catch (err) {
             console.log(err);
         }
@@ -93,17 +97,18 @@ export default function Home() {
         <div>
             <Container maxWidth="lg">
                 <Typography className={classes.typography} variant="h4">
-                    WELCOME HOME
+                    Welcome page
                 </Typography>
-
                 <TextField
                     label="Search"
                     variant="outlined"
-                    onChange={e => setQuery(e.target.value)}
+                    onChange={e => setQuery(e.target.value + " karaoke")}
                     onKeyUp={keyCheck}
+                    placeholder="Enter Artist or Song"
                 />
                 <Button onClick={submit}>Go</Button>
-                <Video />
+                {videoId && <Video videoId={videoId} />}
+                {songs.length && <MoreResults results={songs} />}
             </Container>
         </div>
     );
