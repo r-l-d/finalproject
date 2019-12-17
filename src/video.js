@@ -2,6 +2,14 @@ import React, { useEffect } from "react";
 
 export default function Video(props) {
     let videoId = props.videoId;
+    let songs = props.songs;
+    let songList = [];
+
+    for (var i = 0; i < songs.length; i++) {
+        songList.push(songs[i].id.videoId);
+    }
+
+    console.log("songList in iframeplayer: ", songList);
 
     // useEffect(() => {
     //     if (props.songs.length) {
@@ -12,6 +20,9 @@ export default function Video(props) {
     // }, [props.songs);
 
     console.log("videoId: ", videoId);
+    console.log("songList: ", songList);
+    let songListString = songList.toString();
+    console.log("songListString: ", songListString);
 
     return (
         <div>
@@ -20,6 +31,8 @@ export default function Video(props) {
                 height="315"
                 src={`https://www.youtube.com/embed/${videoId}?&autoplay=1`}
                 frameBorder="0"
+                playlist={`${songListString}`}
+                loop="1"
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
             ></iframe>

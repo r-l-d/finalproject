@@ -18,7 +18,7 @@ export default function FriendRequest() {
     const [open, setOpen] = React.useState(false);
 
     useEffect(() => {
-        console.log("newRequest is here", newRequest);
+        // console.log("newRequest is here", newRequest);
         setOpen(newRequest);
     }, [newRequest]);
 

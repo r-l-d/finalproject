@@ -26,6 +26,13 @@ export default function reducer(state = {}, action) {
         };
     }
 
+    if (action.type == "SET_PLAYLIST") {
+        state = {
+            ...state,
+            songs: action.songs
+        };
+    }
+
     if (action.type == "ACCEPT_FRIEND") {
         state = {
             ...state,

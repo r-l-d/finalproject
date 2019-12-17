@@ -18,6 +18,16 @@ import Grid from "@material-ui/core/Grid";
 import Video from "./video";
 import { MoreResults } from "./more-results";
 import Favorites from "./favorites";
+import IframePlayer from "./iframePlayer";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    receiveFriendsWannabes,
+    acceptFriendRequest,
+    unfriend,
+    getFavorites,
+    removeFavorite,
+    setPlaylist
+} from "./actions";
 
 const useStyles = makeStyles({
     card: {
@@ -43,6 +53,7 @@ export default function Home() {
     const [query, setQuery] = useState("");
     const [songs, setSongs] = useState([]);
     const [videoId, setVideoId] = useState("");
+    const dispatch = useDispatch();
     // const songs = useSelector(state => state && state.songs);
 
     // useEffect(() => {
@@ -74,8 +85,9 @@ export default function Home() {
             console.log("clicked on the button: ", query);
             const { data } = await axios.get(`/api/${query}`);
             // console.log("data in home.js: ", data.items[0].id.videoId);
-            setVideoId(data.items[0].id.videoId);
+            dispatch(setPlaylist(data.items));
             setSongs(data.items);
+            setVideoId(data.items[0].id.videoId);
         } catch (err) {
             console.log(err);
         }
@@ -90,7 +102,7 @@ export default function Home() {
         // });
     }
 
-    if (!users) {
+    if (!songs) {
         return null;
     }
 
@@ -108,8 +120,9 @@ export default function Home() {
                     placeholder="Enter Artist or Song"
                 />
                 <Button onClick={submit}>Go</Button>
-                {videoId && <Video videoId={videoId} />}
-                {songs.length && <MoreResults results={songs} />}
+                {videoId && <IframePlayer videoId={videoId} />}
+                {/* {videoId && <Video videoId={videoId} songs={songs} />} */}
+                {songs.length && <MoreResults />}
                 <Favorites />
             </Container>
         </div>

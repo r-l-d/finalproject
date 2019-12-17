@@ -100,7 +100,7 @@ export default class App extends React.Component {
                         <Route path="/friends" render={() => <Friends />} />
                     </div>
                 </BrowserRouter>
-                <FriendRequest />
+
                 {this.state.uploaderIsVisible && <Dialog open={open}></Dialog>}
             </div>
         );

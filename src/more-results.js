@@ -10,6 +10,14 @@ import TextField from "@material-ui/core/TextField";
 import { display } from "@material-ui/system";
 import Box from "@material-ui/core/Box";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {
+    receiveFriendsWannabes,
+    acceptFriendRequest,
+    unfriend,
+    getFavorites,
+    removeFavorite
+} from "./actions";
 
 // const useStyles = makeStyles({
 //     image: {
@@ -43,13 +51,15 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export function MoreResults(props) {
-    // const chatMessages = useSelector(state => state && state.chatMessages);
+export function MoreResults() {
     const elemRef = useRef();
     const classes = useStyles();
+    const songs = useSelector(state => {
+        return state.songs;
+    });
 
-    console.log("props.results in MoreResults: ", props.results);
-    let songs = props.results;
+    // console.log("props.results in MoreResults: ", props.results);
+    // let songs = props.results;
 
     // useEffect(() => {
     //     // console.log("Chat mounted");
@@ -70,10 +80,13 @@ export function MoreResults(props) {
     // };
 
     // console.log("chatMessages in Chat: ", chatMessages);
+    if (!songs) {
+        return null;
+    }
 
     return (
         <div>
-            <Container maxWidth="m">
+            <Container maxWidth="md">
                 <Typography variant="h5">More Results</Typography>
                 {songs.map(song => (
                     <div key={song.id.videoId}>{song.snippet.title}</div>

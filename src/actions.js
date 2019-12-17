@@ -26,6 +26,14 @@ export async function removeFavorite(id) {
     };
 }
 
+export async function setPlaylist(songs) {
+    console.log("playlist set. Songs: ", songs);
+    return {
+        type: "SET_PLAYLIST",
+        songs
+    };
+}
+
 export async function acceptFriendRequest(id) {
     await axios.post("/update-friendship/" + id, {
         buttonText: "Accept Friend Request"
