@@ -44,6 +44,16 @@ const useStyles = makeStyles({
         display: "flex",
         justifyContent: "center",
         alignItems: "center"
+    },
+    searchField: {
+        width: "70%",
+        marginTop: 10,
+        marginLeft: "15%"
+    },
+    videoPlayer: {
+        marginTop: 10,
+        marginLeft: "auto",
+        marginRight: "auto"
     }
 });
 
@@ -109,18 +119,23 @@ export default function Home() {
     return (
         <div>
             <Container maxWidth="lg">
-                <Typography className={classes.typography} variant="h4">
-                    Welcome page
-                </Typography>
-                <TextField
-                    label="Search"
-                    variant="outlined"
-                    onChange={e => setQuery(e.target.value + " karaoke")}
-                    onKeyUp={keyCheck}
-                    placeholder="Enter Artist or Song"
-                />
-                <Button onClick={submit}>Go</Button>
-                {videoId && <IframePlayer videoId={videoId} />}
+                <div>
+                    <TextField
+                        className={classes.searchField}
+                        label="Search"
+                        variant="outlined"
+                        onChange={e => setQuery(e.target.value + " karaoke")}
+                        onKeyUp={keyCheck}
+                        placeholder="Enter Artist or Song"
+                    />
+                    <Button onClick={submit}>Go</Button>
+                </div>
+                {videoId && (
+                    <IframePlayer
+                        className={classes.videoPlayer}
+                        videoId={videoId}
+                    />
+                )}
                 {/* {videoId && <Video videoId={videoId} songs={songs} />} */}
                 {songs.length && <MoreResults />}
                 <Favorites />
@@ -128,3 +143,7 @@ export default function Home() {
         </div>
     );
 }
+
+// <Typography className={classes.typography} variant="h4">
+//     Welcome page
+// </Typography>

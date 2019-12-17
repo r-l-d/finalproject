@@ -18,24 +18,36 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
+import { borders } from "@material-ui/system";
+import TextField from "@material-ui/core/TextField";
+import { display } from "@material-ui/system";
 
-const useStyles = makeStyles({
-    card: {
-        width: 200,
+const useStyles = makeStyles(theme => ({
+    root: {
+        padding: theme.spacing(1, 2),
         margin: 10
     },
-    media: {
-        height: 100
+    image: {
+        height: 70,
+        width: 70
     },
-    typography: {
-        margin: 10
+    favoritesContainer: {
+        background: "lightgrey",
+        height: 300,
+        overflow: "scroll",
+        width: "25%",
+        border: 1,
+        borderColor: "black"
     },
-    buttonBox: {
-        display: "flex",
-        justifyContent: "flex-start"
-        // alignItems: "flex-end"
+    paperComponent: {
+        marginLeft: 10
+    },
+    chatField: {
+        width: "70%",
+        marginTop: 10
     }
-});
+}));
 
 export default function Favorites() {
     const classes = useStyles();
@@ -54,43 +66,100 @@ export default function Favorites() {
 
     return (
         <div>
-            <Container maxWidth="lg">
-                <div>
-                    <Typography className={classes.typography} variant="h4">
-                        Favorites ({favorites.length})
-                    </Typography>
-                    <Box display="flex" flexWrap="wrap">
-                        {favorites.map(favorite => (
-                            <Card key={favorite.id} className={classes.card}>
-                                <CardActionArea>
-                                    <CardMedia
-                                        component="img"
-                                        className={classes.media}
-                                        image={favorite.image_url}
-                                    />
-                                </CardActionArea>
-                                <CardContent>
-                                    <Typography gutterBottom variant="h6">
-                                        {favorite.title}
-                                    </Typography>
-                                </CardContent>
-                                <CardActions className={classes.buttonBox}>
-                                    <Button
-                                        size="small"
-                                        onClick={e =>
-                                            dispatch(
-                                                removeFavorite(favorite.id)
-                                            )
-                                        }
-                                    >
-                                        Remove
-                                    </Button>
-                                </CardActions>
-                            </Card>
+            <div>
+                <Typography className={classes.typography} variant="h6">
+                    Favorites ({favorites.length})
+                </Typography>
+                <div className={classes.favoritesContainer}>
+                    {favorites &&
+                        favorites.map(favorite => (
+                            <Paper
+                                component="div"
+                                display="flex"
+                                className={classes.root}
+                                key={favorite.id}
+                            >
+                                <Box display="flex" alignItems="center">
+                                    <div>
+                                        <img
+                                            className={classes.image}
+                                            src={favorite.image_url}
+                                        />
+                                    </div>
+                                    <div className={classes.paperComponent}>
+                                        <div>
+                                            <Typography variant="body1">
+                                                {favorite.title}
+                                            </Typography>
+                                        </div>
+                                    </div>
+                                    <Box display="flex" flexDirection="column">
+                                        <Button
+                                            size="small"
+                                            onClick={e =>
+                                                dispatch(
+                                                    removeFavorite(favorite.id)
+                                                )
+                                            }
+                                        >
+                                            Remove
+                                        </Button>
+                                        <Button
+                                            size="small"
+                                            onClick={e =>
+                                                dispatch(
+                                                    addToQueue(favorite.id)
+                                                )
+                                            }
+                                        >
+                                            Add to Queue
+                                        </Button>
+                                        <Button
+                                            size="small"
+                                            onClick={e =>
+                                                dispatch(playNow(favorite.id))
+                                            }
+                                        >
+                                            Play Now
+                                        </Button>
+                                    </Box>
+                                </Box>
+                            </Paper>
                         ))}
-                    </Box>
                 </div>
-            </Container>
+            </div>
         </div>
     );
 }
+
+// <Box display="flex" flexWrap="wrap">
+// {favorites.map(favorite => (
+//     <Card key={favorite.id} className={classes.card}>
+//     <CardActionArea>
+//     <CardMedia
+//     component="img"
+//     className={classes.media}
+//     image={favorite.image_url}
+//     />
+//     </CardActionArea>
+//     <CardContent>
+//     <Typography gutterBottom variant="h6">
+//     {favorite.title}
+//     </Typography>
+//     </CardContent>
+//     <CardActions className={classes.buttonBox}>
+//     <Button
+//     size="small"
+//     onClick={e =>
+//         dispatch(
+//             removeFavorite(favorite.id)
+//         )
+//     }
+//     >
+//     Remove
+//     </Button>
+//     </CardActions>
+//     </Card>
+// ))}
+//
+// </Box>
