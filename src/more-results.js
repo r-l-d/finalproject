@@ -16,7 +16,9 @@ import {
     acceptFriendRequest,
     unfriend,
     getFavorites,
-    removeFavorite
+    removeFavorite,
+    addToQueue,
+    playNow
 } from "./actions";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -75,6 +77,7 @@ const useStyles = makeStyles(theme => ({
 export function MoreResults() {
     const elemRef = useRef();
     const classes = useStyles();
+    const dispatch = useDispatch();
     const songs = useSelector(state => {
         return state.songs;
     });
@@ -82,15 +85,9 @@ export function MoreResults() {
     // console.log("props.results in MoreResults: ", props.results);
     // let songs = props.results;
 
-    // useEffect(() => {
-    //     // console.log("Chat mounted");
-    //     // console.log("elemRef.current: ", elemRef.current);
-    //     // console.log("scroll top: ", elemRef.current.scrollTop);
-    //     // console.log("clientHeight: ", elemRef.current.clientHeight);
-    //     // console.log("scrollHeight: ", elemRef.current.scrollHeight);
-    //     elemRef.current.scrollTop =
-    //         elemRef.current.scrollHeight - elemRef.current.clientHeight;
-    // }, [chatMessages]);
+    useEffect(() => {
+        console.log("songs in more results:", songs);
+    }, [songs]);
     //
     // const keyCheck = e => {
     //     if (e.key == "Enter") {
@@ -128,13 +125,15 @@ export function MoreResults() {
                             <CardActions className={classes.buttonBox}>
                                 <Button
                                     size="small"
-                                    onClick={e => dispatch(unfriend(friend.id))}
+                                    onClick={e => dispatch(addToQueue(song))}
                                 >
-                                    Remove From Queue
+                                    Add to Queue
                                 </Button>
                                 <Button
                                     size="small"
-                                    onClick={e => dispatch(unfriend(friend.id))}
+                                    onClick={e =>
+                                        dispatch(playNow(song.id.videoId))
+                                    }
                                 >
                                     Play Now
                                 </Button>

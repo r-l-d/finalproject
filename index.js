@@ -101,7 +101,7 @@ app.get("/user.json", async (req, res) => {
 
 app.get("/api/:query", function(req, res) {
     let query = req.params.query;
-    console.log("query: ", query);
+    // console.log("query: ", query);
     const options = {
         url: "https://www.googleapis.com/youtube/v3/search",
         qs: {
@@ -110,12 +110,12 @@ app.get("/api/:query", function(req, res) {
             key: secrets.API_KEY,
             videoEmbeddable: "true",
             type: "video",
-            videoSyndicated: "true"
+            videoSyndicated: "true",
+            regionCode: "de"
         }
     };
     console.log("options: ", options);
     request(options, function(err, response, body) {
-        console.log("body: ", body);
         res.json(JSON.parse(body));
     });
 });

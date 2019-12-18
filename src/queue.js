@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    receiveFriendsWannabes,
-    acceptFriendRequest,
-    unfriend,
-    getFavorites,
-    removeFavorite,
-    playNow,
-    addToQueue
-} from "./actions";
+import { playNow, removeFromQueue, getQueue } from "./actions";
 import { Link } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
@@ -52,47 +44,48 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function Favorites() {
+export default function Queue() {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const favorites = useSelector(state => {
-        return state.favorites;
+    const queue = useSelector(state => {
+        return state.queue;
     });
 
     useEffect(() => {
-        dispatch(getFavorites());
-    }, []);
+        dispatch(getQueue());
+        // console.log("queue in queue:", queue);
+    }, [queue]);
 
-    if (!favorites) {
-        return null;
-    }
+    // if (!queue) {
+    //     return null;
+    // }
 
     return (
         <div>
             <div>
                 <Typography className={classes.typography} variant="h6">
-                    Favorites ({favorites.length})
+                    Queue
                 </Typography>
                 <div className={classes.favoritesContainer}>
-                    {favorites &&
-                        favorites.map(favorite => (
+                    {queue &&
+                        queue.map(song => (
                             <Paper
                                 component="div"
                                 display="flex"
                                 className={classes.root}
-                                key={favorite.id}
+                                key={song.video_id}
                             >
                                 <Box display="flex" alignItems="center">
                                     <div>
                                         <img
                                             className={classes.image}
-                                            src={favorite.image_url}
+                                            src={song.image_url}
                                         />
                                     </div>
                                     <div className={classes.paperComponent}>
                                         <div>
                                             <Typography variant="body1">
-                                                {favorite.title}
+                                                {song.title}
                                             </Typography>
                                         </div>
                                     </div>
@@ -101,27 +94,28 @@ export default function Favorites() {
                                             size="small"
                                             onClick={e =>
                                                 dispatch(
-                                                    removeFavorite(favorite.id)
+                                                    removeFromQueue(
+                                                        song.video_id
+                                                    )
                                                 )
                                             }
                                         >
                                             Remove
                                         </Button>
+
                                         <Button
                                             size="small"
-                                            onClick={e =>
-                                                dispatch(addToQueue(favorite))
-                                            }
-                                        >
-                                            Add to Queue
-                                        </Button>
-                                        <Button
-                                            size="small"
-                                            onClick={e =>
+                                            onClick={e => {
                                                 dispatch(
-                                                    playNow(favorite.video_id)
-                                                )
-                                            }
+                                                    playNow(song.video_id)
+                                                );
+
+                                                dispatch(
+                                                    removeFromQueue(
+                                                        song.video_id
+                                                    )
+                                                );
+                                            }}
                                         >
                                             Play Now
                                         </Button>
@@ -134,35 +128,3 @@ export default function Favorites() {
         </div>
     );
 }
-
-// <Box display="flex" flexWrap="wrap">
-// {favorites.map(favorite => (
-//     <Card key={favorite.id} className={classes.card}>
-//     <CardActionArea>
-//     <CardMedia
-//     component="img"
-//     className={classes.media}
-//     image={favorite.image_url}
-//     />
-//     </CardActionArea>
-//     <CardContent>
-//     <Typography gutterBottom variant="h6">
-//     {favorite.title}
-//     </Typography>
-//     </CardContent>
-//     <CardActions className={classes.buttonBox}>
-//     <Button
-//     size="small"
-//     onClick={e =>
-//         dispatch(
-//             removeFavorite(favorite.id)
-//         )
-//     }
-//     >
-//     Remove
-//     </Button>
-//     </CardActions>
-//     </Card>
-// ))}
-//
-// </Box>

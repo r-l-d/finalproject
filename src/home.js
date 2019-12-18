@@ -20,13 +20,15 @@ import { MoreResults } from "./more-results";
 import Favorites from "./favorites";
 import IframePlayer from "./iframePlayer";
 import { useDispatch, useSelector } from "react-redux";
+import Queue from "./queue";
 import {
     receiveFriendsWannabes,
     acceptFriendRequest,
     unfriend,
     getFavorites,
     removeFavorite,
-    setPlaylist
+    setPlaylist,
+    playNow
 } from "./actions";
 
 const useStyles = makeStyles({
@@ -64,6 +66,7 @@ export default function Home() {
     const [songs, setSongs] = useState([]);
     const [videoId, setVideoId] = useState("");
     const dispatch = useDispatch();
+
     // const songs = useSelector(state => state && state.songs);
 
     // useEffect(() => {
@@ -92,12 +95,14 @@ export default function Home() {
 
     async function submit() {
         try {
-            console.log("clicked on the button: ", query);
+            // console.log("clicked on the button: ", query);
             const { data } = await axios.get(`/api/${query}`);
             // console.log("data in home.js: ", data.items[0].id.videoId);
             dispatch(setPlaylist(data.items));
-            setSongs(data.items);
-            setVideoId(data.items[0].id.videoId);
+            console.log("data.items: ", data.items);
+            dispatch(playNow(data.items[0].id.videoId));
+            // setSongs(data.items);
+            // setVideoId(data.items[0].id.videoId);
         } catch (err) {
             console.log(err);
         }
@@ -122,7 +127,7 @@ export default function Home() {
                 <div>
                     <TextField
                         className={classes.searchField}
-                        label="Search"
+                        label="Roulette"
                         variant="outlined"
                         onChange={e => setQuery(e.target.value + " karaoke")}
                         onKeyUp={keyCheck}
@@ -130,15 +135,16 @@ export default function Home() {
                     />
                     <Button onClick={submit}>Go</Button>
                 </div>
-                {videoId && (
-                    <IframePlayer
-                        className={classes.videoPlayer}
-                        videoId={videoId}
-                    />
-                )}
-                {/* {videoId && <Video videoId={videoId} songs={songs} />} */}
-                {songs.length && <MoreResults />}
                 <Favorites />
+
+                <IframePlayer
+                    className={classes.videoPlayer}
+                    // videoId={videoId}
+                />
+
+                <Queue />
+                {/* {videoId && <Video videoId={videoId} songs={songs} />} */}
+                <MoreResults />
             </Container>
         </div>
     );

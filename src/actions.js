@@ -11,7 +11,7 @@ export async function receiveFriendsWannabes() {
 
 export async function getFavorites() {
     const { data } = await axios.get("/favorites");
-    console.log("data from favorites action: ", data);
+    // console.log("data from favorites action: ", data);
     return {
         type: "GET_FAVORITES",
         favorites: data
@@ -31,6 +31,37 @@ export async function setPlaylist(songs) {
     return {
         type: "SET_PLAYLIST",
         songs
+    };
+}
+
+export async function getQueue() {
+    // console.log("getting the queue in actions");
+    return {
+        type: "GET_QUEUE"
+    };
+}
+
+export async function addToQueue(song) {
+    // console.log("video added to queue. song is: ", song);
+    return {
+        type: "ADD_TO_QUEUE",
+        song
+    };
+}
+
+export async function playNow(video_id) {
+    console.log("PlayNow called in actions. video_id is: ", video_id);
+    return {
+        type: "PLAY_NOW",
+        video_id
+    };
+}
+
+export async function removeFromQueue(video_id) {
+    console.log("video removed from queue. video_id is: ", video_id);
+    return {
+        type: "REMOVE_FROM_QUEUE",
+        video_id
     };
 }
 
