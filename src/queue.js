@@ -26,12 +26,12 @@ const useStyles = makeStyles(theme => ({
         height: 70,
         width: 70
     },
-    favoritesContainer: {
+    gridContainer: {
         background: "lightgrey",
         height: 300,
         overflow: "scroll",
-        width: "25%",
-        minWidth: 300,
+        // width: "25%",
+        // minWidth: 300,
         border: 1,
         borderColor: "black"
     },
@@ -66,7 +66,7 @@ export default function Queue() {
                 <Typography className={classes.typography} variant="h6">
                     Queue
                 </Typography>
-                <div className={classes.favoritesContainer}>
+                <div className={classes.gridContainer}>
                     {queue &&
                         queue.map(song => (
                             <Paper

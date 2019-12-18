@@ -36,19 +36,15 @@ const useStyles = makeStyles(theme => ({
     },
     favoritesContainer: {
         background: "lightgrey",
-        height: 300,
+        // height: 300,
         overflow: "scroll",
-        width: "25%",
-        minWidth: 300,
+        // width: "25%",
+        // minWidth: 300,
         border: 1,
         borderColor: "black"
     },
     paperComponent: {
         marginLeft: 10
-    },
-    chatField: {
-        width: "70%",
-        marginTop: 10
     }
 }));
 

@@ -50,7 +50,7 @@ export async function addToQueue(song) {
 }
 
 export async function playNow(video_id) {
-    console.log("PlayNow called in actions. video_id is: ", video_id);
+    // console.log("PlayNow called in actions. video_id is: ", video_id);
     return {
         type: "PLAY_NOW",
         video_id

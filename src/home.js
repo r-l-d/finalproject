@@ -21,6 +21,10 @@ import Favorites from "./favorites";
 import IframePlayer from "./iframePlayer";
 import { useDispatch, useSelector } from "react-redux";
 import Queue from "./queue";
+import Fab from "@material-ui/core/Fab";
+import MicIcon from "@material-ui/icons/Mic";
+import Chips from "./chips";
+
 import {
     receiveFriendsWannabes,
     acceptFriendRequest,
@@ -48,9 +52,8 @@ const useStyles = makeStyles({
         alignItems: "center"
     },
     searchField: {
-        width: "70%",
         marginTop: 10,
-        marginLeft: "15%"
+        width: "100%"
     },
     videoPlayer: {
         marginTop: 10,
@@ -66,6 +69,7 @@ export default function Home() {
     const [songs, setSongs] = useState([]);
     const [videoId, setVideoId] = useState("");
     const dispatch = useDispatch();
+    let video = false;
 
     // const songs = useSelector(state => state && state.songs);
 
@@ -101,6 +105,7 @@ export default function Home() {
             dispatch(setPlaylist(data.items));
             console.log("data.items: ", data.items);
             dispatch(playNow(data.items[0].id.videoId));
+            video = true;
             // setSongs(data.items);
             // setVideoId(data.items[0].id.videoId);
         } catch (err) {
@@ -124,25 +129,58 @@ export default function Home() {
     return (
         <div>
             <Container maxWidth="lg">
-                <div>
-                    <TextField
-                        className={classes.searchField}
-                        label="Roulette"
-                        variant="outlined"
-                        onChange={e => setQuery(e.target.value + " karaoke")}
-                        onKeyUp={keyCheck}
-                        placeholder="Enter Artist or Song"
-                    />
-                    <Button onClick={submit}>Go</Button>
-                </div>
-                <Favorites />
+                <Grid
+                    container
+                    direction="row"
+                    alignItems="center"
+                    justify="center"
+                    spacing={2}
+                >
+                    <Grid item xs={9}>
+                        <TextField
+                            className={classes.searchField}
+                            label="Roulette"
+                            variant="outlined"
+                            onChange={e =>
+                                setQuery(e.target.value + " karaoke")
+                            }
+                            onKeyUp={keyCheck}
+                            placeholder="Enter Artist or Song"
+                        />
+                    </Grid>
+                    <Grid item>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            onClick={submit}
+                        >
+                            <MicIcon />
+                            Go
+                        </Button>
+                    </Grid>
+                </Grid>
+                <Grid
+                    container
+                    direction="row"
+                    alignItems="center"
+                    justify="center"
+                    spacing={2}
+                >
+                    <Grid item xs>
+                        <Queue />
+                    </Grid>
 
-                <IframePlayer
-                    className={classes.videoPlayer}
-                    // videoId={videoId}
-                />
+                    <Grid item xs={6}>
+                        <Chips />
+                    </Grid>
 
-                <Queue />
+                    <IframePlayer className={classes.videoPlayer} />
+
+                    <Grid item xs>
+                        <Favorites />
+                    </Grid>
+                </Grid>
                 {/* {videoId && <Video videoId={videoId} songs={songs} />} */}
                 <MoreResults />
             </Container>

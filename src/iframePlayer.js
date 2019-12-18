@@ -3,9 +3,10 @@ import { useSelector } from "react-redux";
 
 export default function IframePlayer() {
     // let videoId = props.videoId;
-    let songList = [];
+    // let songList = [];
     let playListIndex = 0;
     const [player, setPlayer] = useState({});
+    const [songList, setSongList] = useState([]);
 
     const songs = useSelector(state => {
         return state.songs;
@@ -23,10 +24,10 @@ export default function IframePlayer() {
         return state.favorites;
     });
 
-    console.log("videoId in player: ", videoId);
-    console.log("queue in player: ", queue);
-    console.log("favorites in player: ", favorites);
-    console.log("songs in player: ", songs);
+    // console.log("videoId in player: ", videoId);
+    // console.log("queue in player: ", queue);
+    // console.log("favorites in player: ", favorites);
+    // console.log("songs in player: ", songs);
     // let songListString = songList.toString();
     // console.log("songListString: ", songListString);
 
@@ -37,7 +38,7 @@ export default function IframePlayer() {
     //     console.log("player is playing");
     // }
 
-    console.log("videodata before useEffect: ", videoData);
+    // console.log("videodata before useEffect: ", videoData);
 
     useEffect(() => {
         if (player.l) {
@@ -52,13 +53,14 @@ export default function IframePlayer() {
             if (!videoId) {
                 return;
             } else {
-                if (queue.length) {
-                    console.log("queue being added to songList: ", queue);
-                    for (var j = 0; j < queue.length; j++) {
-                        songList.unshift(queue[j].video_id);
-                    }
-                    console.log("songList after queue added: ", songList);
-                }
+                // console.log("queue.length: ", queue.length);
+                // if (queue.length > 0) {
+                //     console.log("queue being added to songList: ", queue);
+                //     for (var j = 0; j < queue.length; j++) {
+                //         setSongList(songList.unshift(queue[j].video_id));
+                //     }
+                //     console.log("songList after queue added: ", songList);
+                // }
                 // console.log("videoId in player useEffect: ", videoId);
                 // console.log("videodata inside useEffect: ", videoData);
                 setPlayer(
@@ -88,13 +90,25 @@ export default function IframePlayer() {
                                 );
                             },
                             onStateChange: function(event) {
-                                console.log;
                                 if (event.data == 0) {
                                     console.log("songs in event = 0: ", songs);
                                     console.log(
-                                        "queue in onstatechage = 0: ",
-                                        queue
+                                        "queue.length in onstatechage: ",
+                                        queue.length
                                     );
+                                    if (queue.length > 0) {
+                                        console.log(
+                                            "queue being added to songList: ",
+                                            queue
+                                        );
+                                        for (var j = 0; j < queue.length; j++) {
+                                            songList.unshift(queue[j].video_id);
+                                        }
+                                        console.log(
+                                            "songList after queue added: ",
+                                            songList
+                                        );
+                                    }
 
                                     for (var i = 1; i < songs.length; i++) {
                                         songList.push(songs[i].id.videoId);
@@ -103,7 +117,6 @@ export default function IframePlayer() {
                                         "songList in iframeplayer: ",
                                         songList
                                     );
-                                    playListIndex++;
                                     console.log(
                                         "video has stopped. Playlist index is: ",
                                         playListIndex
@@ -116,6 +129,7 @@ export default function IframePlayer() {
                                     event.target.loadVideoById(
                                         `${songList[playListIndex]}`
                                     );
+                                    playListIndex++;
                                 }
                             }
                         },

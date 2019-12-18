@@ -107,7 +107,7 @@ export function MoreResults() {
             <Container maxWidth="md">
                 <Typography variant="h5">More Results</Typography>
                 <Box display="flex" flexWrap="wrap">
-                    {songs.map(song => (
+                    {songs.slice(1).map(song => (
                         <Card key={song.id.videoId} className={classes.card}>
                             <CardActionArea>
                                 <CardMedia
