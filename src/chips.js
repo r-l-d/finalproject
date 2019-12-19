@@ -6,6 +6,7 @@ import FaceIcon from "@material-ui/icons/Face";
 import DoneIcon from "@material-ui/icons/Done";
 import Paper from "@material-ui/core/Paper";
 import TagFacesIcon from "@material-ui/icons/TagFaces";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -23,6 +24,10 @@ export default function Chips(props) {
     const classes = useStyles();
     let setQuery = props.setQuery;
     let query = props.query;
+
+    const videoId = useSelector(state => {
+        return state.videoId;
+    });
 
     const [chipData, setChipData] = React.useState([
         { key: 0, label: "1950s" },
@@ -55,6 +60,10 @@ export default function Chips(props) {
             chips.filter(chip => chip.key !== chipToDelete.key)
         );
     };
+
+    if (videoId) {
+        return null;
+    }
 
     return (
         <Paper className={classes.root}>

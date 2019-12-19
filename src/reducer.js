@@ -85,6 +85,13 @@ export default function reducer(
         };
     }
 
+    if (action.type == "ADD_FAVORITE") {
+        state = {
+            ...state,
+            favorites: state.favorites.concat(action.data)
+        };
+    }
+
     if (action.type == "ACCEPT_FRIEND") {
         state = {
             ...state,

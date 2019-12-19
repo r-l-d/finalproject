@@ -128,7 +128,7 @@ app.get("/api/:query", function(req, res) {
         qs: {
             part: "snippet",
             q: query,
-            key: secrets.API_KEY,
+            key: secrets.API_KEY2,
             videoEmbeddable: "true",
             type: "video",
             videoSyndicated: "true",
@@ -146,7 +146,7 @@ app.get("/api/:query", function(req, res) {
             qs: {
                 part: "snippet",
                 relatedToVideoId: videoId,
-                key: secrets.API_KEY,
+                key: secrets.API_KEY2,
                 videoEmbeddable: "true",
                 type: "video",
                 videoSyndicated: "true",
@@ -305,6 +305,25 @@ app.post("/remove-favorite/:id", async (req, res) => {
         res.json({
             notification: "Song Removed From Favorites"
         });
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+app.post("/add-favorite", async (req, res) => {
+    try {
+        // console.log("req.body: ", req.body);
+        const video_id = req.body.currentVideoId;
+        const title = req.body.currentTitle;
+        const image_url = req.body.currentImage_Url;
+        const user_id = req.session.userId;
+        let { rows } = await db.addFavorite(
+            video_id,
+            title,
+            image_url,
+            user_id
+        );
+        res.json(rows);
     } catch (err) {
         console.log(err);
     }

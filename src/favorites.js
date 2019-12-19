@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
     },
     favoritesContainer: {
         background: "lightgrey",
-        // height: 300,
+        height: 400,
         overflow: "scroll",
         // width: "25%",
         // minWidth: 300,

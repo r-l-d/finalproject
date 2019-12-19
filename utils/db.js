@@ -26,6 +26,18 @@ exports.getFavorites = function getFavorites(id) {
 exports.removeFavorite = function removeFavorite(id) {
     return db.query("DELETE FROM favorites WHERE id=$1", [id]);
 };
+
+exports.addFavorite = function addFavorite(
+    video_id,
+    title,
+    image_url,
+    user_id
+) {
+    return db.query(
+        "INSERT INTO favorites(video_id, title, image_url, user_id) VALUES ($1, $2, $3, $4) RETURNING id, video_id, title, image_url",
+        [video_id, title, image_url, user_id]
+    );
+};
 // exports.addImage = function addImage(url, id) {
 //     return db.query("UPDATE users SET image_url=$1  WHERE id=$2", [url, id]);
 // };

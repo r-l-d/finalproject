@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "@material-ui/core/Button";
+import { addFavorite } from "./actions";
 
 export default function IframePlayer() {
     // let videoId = props.videoId;
@@ -9,6 +10,7 @@ export default function IframePlayer() {
     let favoritesIndex = 0;
     const [player, setPlayer] = useState({});
     const [songList, setSongList] = useState([]);
+    const dispatch = useDispatch();
 
     const songs = useSelector(state => {
         return state.songs;
@@ -133,22 +135,45 @@ export default function IframePlayer() {
         // console.log("player: ", player, "songs: ", songs);
         // player.loadVideoById(`${songs[playListIndex].id.videoId}`);
         if (!songs) {
-            player.loadVideoById(`${favorites[favoritesIndex].video_id}`);
             favoritesIndex++;
+            player.loadVideoById(`${favorites[favoritesIndex].video_id}`);
         } else {
             playListIndex++;
             player.loadVideoById(`${songs[playListIndex].id.videoId}`);
         }
     }
 
+    function addToFavorites(currentVideoData) {
+        console.log("currentVideoData", currentVideoData);
+        const currentVideoId = currentVideoData.video_id;
+        console.log("currentvideoId: ", currentVideoId);
+        const currentTitle = currentVideoData.title;
+        for (let i = 0; i < songs.length; i++) {
+            if (currentVideoId == songs[i].id.videoId) {
+                var currentImage_Url = songs[i].snippet.thumbnails.default.url;
+            }
+        }
+        dispatch(
+            addFavorite({ currentVideoId, currentTitle, currentImage_Url })
+        );
+    }
+
     return (
         <div>
             <div id="ytplayer"></div>
-            <Button onClick={nextSong}>Next Song</Button>
+            {videoId && (
+                <div>
+                    <Button onClick={nextSong}>Next Song</Button>
+                    <Button onClick={() => addToFavorites(player.l.videoData)}>
+                        Add to favorites
+                    </Button>
+                </div>
+            )}
         </div>
     );
 }
 
+// dispatch(addFavorite(player.l.videoData))
 //
 // window.onYouTubePlayerAPIReady = function onYouTubePlayerAPIReady() {
 //     // player = new YT.Player("ytplayer", {

@@ -60,6 +60,10 @@ const useStyles = makeStyles({
         marginTop: 10,
         marginLeft: "auto",
         marginRight: "auto"
+    },
+    searchContainer: {
+        marginTop: 30,
+        marginBottom: 30
     }
 });
 
@@ -105,7 +109,7 @@ export default function Home() {
             dispatch(setPlaylist(data));
             // console.log("data.items: ", data);
             dispatch(playNow(data[0].id.videoId));
-
+            setQuery("");
             // setSongs(data.items);
             // setVideoId(data.items[0].id.videoId);
         } catch (err) {
@@ -129,36 +133,38 @@ export default function Home() {
     return (
         <div>
             <Container maxWidth="lg">
-                <Grid
-                    container
-                    direction="row"
-                    alignItems="center"
-                    justify="center"
-                    spacing={2}
-                >
-                    <Grid item xs={9}>
-                        <TextField
-                            value={query}
-                            className={classes.searchField}
-                            label="Roulette"
-                            variant="outlined"
-                            onChange={e => setQuery(e.target.value)}
-                            onKeyUp={keyCheck}
-                            placeholder="Enter Artist, Song, Genre, etc."
-                        />
+                <div className={classes.searchContainer}>
+                    <Grid
+                        container
+                        direction="row"
+                        alignItems="center"
+                        justify="center"
+                        spacing={2}
+                    >
+                        <Grid item xs={9}>
+                            <TextField
+                                value={query}
+                                className={classes.searchField}
+                                label="Roulette"
+                                variant="outlined"
+                                onChange={e => setQuery(e.target.value)}
+                                onKeyUp={keyCheck}
+                                placeholder="Enter Artist, Song, Genre, etc."
+                            />
+                        </Grid>
+                        <Grid item>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                size="large"
+                                onClick={submit}
+                            >
+                                <CasinoIcon />
+                                GO
+                            </Button>
+                        </Grid>
                     </Grid>
-                    <Grid item>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            size="large"
-                            onClick={submit}
-                        >
-                            <CasinoIcon />
-                            GO
-                        </Button>
-                    </Grid>
-                </Grid>
+                </div>
                 <Grid
                     container
                     direction="row"

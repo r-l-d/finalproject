@@ -25,6 +25,16 @@ export async function removeFavorite(id) {
         id
     };
 }
+//
+export async function addFavorite(videoData) {
+    console.log("videodata in actions: ", videoData);
+    const { data } = await axios.post("/add-favorite/", videoData);
+    console.log("data back from addfavorite: ", data);
+    return {
+        type: "ADD_FAVORITE",
+        data
+    };
+}
 
 export async function setPlaylist(songs) {
     console.log("playlist set. Songs: ", songs);
