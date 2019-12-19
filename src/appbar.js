@@ -77,35 +77,12 @@ export default function MenuAppBar(props) {
                                     <Link
                                         color="inherit"
                                         underline="none"
-                                        href="/chat"
+                                        href="/Logout"
                                     >
-                                        Chat
+                                        Logout
                                     </Link>
                                 </Typography>
-                                <Typography
-                                    className={classes.link}
-                                    variant="h6"
-                                >
-                                    <Link
-                                        color="inherit"
-                                        underline="none"
-                                        href="/friends"
-                                    >
-                                        Friends
-                                    </Link>
-                                </Typography>
-                                <Typography
-                                    className={classes.link}
-                                    variant="h6"
-                                >
-                                    <Link
-                                        color="inherit"
-                                        underline="none"
-                                        href="/users"
-                                    >
-                                        Users
-                                    </Link>
-                                </Typography>
+
                                 <IconButton
                                     aria-label="account of current user"
                                     aria-controls="menu-appbar"

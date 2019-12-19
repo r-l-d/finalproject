@@ -106,14 +106,6 @@ export default function Favorites() {
                                         <Button
                                             size="small"
                                             onClick={e =>
-                                                dispatch(addToQueue(favorite))
-                                            }
-                                        >
-                                            Add to Queue
-                                        </Button>
-                                        <Button
-                                            size="small"
-                                            onClick={e =>
                                                 dispatch(
                                                     playNow(favorite.video_id)
                                                 )
@@ -162,3 +154,12 @@ export default function Favorites() {
 // ))}
 //
 // </Box>
+
+// <Button
+// size="small"
+// onClick={e =>
+//     dispatch(addToQueue(favorite))
+// }
+// >
+// Add to Queue
+// </Button>

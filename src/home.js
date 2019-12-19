@@ -24,6 +24,7 @@ import Queue from "./queue";
 import Fab from "@material-ui/core/Fab";
 import MicIcon from "@material-ui/icons/Mic";
 import Chips from "./chips";
+import CasinoIcon from "@material-ui/icons/Casino";
 
 import {
     receiveFriendsWannabes,
@@ -69,7 +70,6 @@ export default function Home() {
     const [songs, setSongs] = useState([]);
     const [videoId, setVideoId] = useState("");
     const dispatch = useDispatch();
-    let video = false;
 
     // const songs = useSelector(state => state && state.songs);
 
@@ -100,12 +100,12 @@ export default function Home() {
     async function submit() {
         try {
             // console.log("clicked on the button: ", query);
-            const { data } = await axios.get(`/api/${query}`);
-            console.log("data in home.js: ", data);
+            const { data } = await axios.get(`/api/${query} karaoke`);
+            // console.log("data in home.js: ", data);
             dispatch(setPlaylist(data));
-            console.log("data.items: ", data);
+            // console.log("data.items: ", data);
             dispatch(playNow(data[0].id.videoId));
-            video = true;
+
             // setSongs(data.items);
             // setVideoId(data.items[0].id.videoId);
         } catch (err) {
@@ -138,14 +138,13 @@ export default function Home() {
                 >
                     <Grid item xs={9}>
                         <TextField
+                            value={query}
                             className={classes.searchField}
                             label="Roulette"
                             variant="outlined"
-                            onChange={e =>
-                                setQuery(e.target.value + " karaoke")
-                            }
+                            onChange={e => setQuery(e.target.value)}
                             onKeyUp={keyCheck}
-                            placeholder="Enter Artist or Song"
+                            placeholder="Enter Artist, Song, Genre, etc."
                         />
                     </Grid>
                     <Grid item>
@@ -155,8 +154,8 @@ export default function Home() {
                             size="large"
                             onClick={submit}
                         >
-                            <MicIcon />
-                            Go
+                            <CasinoIcon />
+                            GO
                         </Button>
                     </Grid>
                 </Grid>
@@ -167,27 +166,27 @@ export default function Home() {
                     justify="center"
                     spacing={2}
                 >
-                    <Grid item xs>
-                        <Queue />
-                    </Grid>
-
                     <Grid item xs={6}>
-                        <Chips />
+                        <Chips query={query} setQuery={setQuery} />
                     </Grid>
 
                     <IframePlayer className={classes.videoPlayer} />
 
-                    <Grid item xs>
+                    <Grid item xs={3}>
                         <Favorites />
                     </Grid>
                 </Grid>
                 {/* {videoId && <Video videoId={videoId} songs={songs} />} */}
-                <MoreResults />
             </Container>
         </div>
     );
 }
+// <MoreResults />
 
 // <Typography className={classes.typography} variant="h4">
 //     Welcome page
 // </Typography>
+
+// <Grid item xs>
+//     <Queue />
+// </Grid>

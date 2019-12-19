@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import Button from "@material-ui/core/Button";
 
 export default function IframePlayer() {
     // let videoId = props.videoId;
     // let songList = [];
     let playListIndex = 0;
+    let favoritesIndex = 0;
     const [player, setPlayer] = useState({});
     const [songList, setSongList] = useState([]);
 
@@ -26,7 +28,7 @@ export default function IframePlayer() {
 
     // console.log("videoId in player: ", videoId);
     // console.log("queue in player: ", queue);
-    // console.log("favorites in player: ", favorites);
+    console.log("favorites in player: ", favorites);
     // console.log("songs in player: ", songs);
     // let songListString = songList.toString();
     // console.log("songListString: ", songListString);
@@ -92,44 +94,27 @@ export default function IframePlayer() {
                             onStateChange: function(event) {
                                 if (event.data == 0) {
                                     console.log("songs in event = 0: ", songs);
-                                    console.log(
-                                        "queue.length in onstatechage: ",
-                                        queue.length
-                                    );
-                                    if (queue.length > 0) {
-                                        console.log(
-                                            "queue being added to songList: ",
-                                            queue
-                                        );
-                                        for (var j = 0; j < queue.length; j++) {
-                                            songList.unshift(queue[j].video_id);
-                                        }
-                                        console.log(
-                                            "songList after queue added: ",
-                                            songList
-                                        );
-                                    }
 
-                                    for (var i = 1; i < songs.length; i++) {
-                                        songList.push(songs[i].id.videoId);
-                                    }
-                                    console.log(
-                                        "songList in iframeplayer: ",
-                                        songList
-                                    );
                                     console.log(
                                         "video has stopped. Playlist index is: ",
                                         playListIndex
                                     );
 
-                                    console.log(
-                                        "songList[playListIndex]: ",
-                                        songList[playListIndex]
-                                    );
-                                    event.target.loadVideoById(
-                                        `${songList[playListIndex]}`
-                                    );
-                                    playListIndex++;
+                                    if (!songs) {
+                                        console.log(
+                                            "song playing from favorites"
+                                        );
+                                        event.target.loadVideoById(
+                                            `${favorites[favoritesIndex].video_id}`
+                                        );
+                                        favoritesIndex++;
+                                    } else {
+                                        playListIndex++;
+                                        console.log("song playing from songs");
+                                        event.target.loadVideoById(
+                                            `${songs[playListIndex].id.videoId}`
+                                        );
+                                    }
                                 }
                             }
                         },
@@ -142,45 +127,24 @@ export default function IframePlayer() {
             }
         }
         // console.log("songs in useEffect: ", songs);
-    }, [videoId, queue]);
+    }, [videoId]);
 
-    // if (!songs) {
-    //     return null;
-    // }
-    //
-    // function onPlayerReady() {
-    //     console.log("player ready");
-    //     player.playVideo();
-    //     // player.loadPlaylist({
-    //     //     listType: "playlist",
-    //     //     list: songListString
-    //     // });
-    // }
-    //
-    // function onPlayerStateChange(event) {
-    //     // console.log("player state change event: ", event);
-    //     console.log("songs outside of conditional: ", songs);
-    //
-    //     if (event.data == 0) {
-    //         console.log("songs in event = 0: ", songs);
-    //         for (var i = 0; i < songs.length; i++) {
-    //             songList.push(songs[i].id.videoId);
-    //         }
-    //         console.log("songList in iframeplayer: ", songList);
-    //         playListIndex++;
-    //         console.log(
-    //             "video has stopped. Playlist index is: ",
-    //             playListIndex
-    //         );
-    //         console.log("songlist in player state change: ", songList);
-    //         console.log("songList[playListIndex]: ", songList[playListIndex]);
-    //         player.loadVideoById(`${songList[playListIndex]}`);
-    //     }
-    // }
+    function nextSong() {
+        // console.log("player: ", player, "songs: ", songs);
+        // player.loadVideoById(`${songs[playListIndex].id.videoId}`);
+        if (!songs) {
+            player.loadVideoById(`${favorites[favoritesIndex].video_id}`);
+            favoritesIndex++;
+        } else {
+            playListIndex++;
+            player.loadVideoById(`${songs[playListIndex].id.videoId}`);
+        }
+    }
 
     return (
         <div>
             <div id="ytplayer"></div>
+            <Button onClick={nextSong}>Next Song</Button>
         </div>
     );
 }
@@ -197,3 +161,37 @@ export default function IframePlayer() {
 //     //     }
 //     // });
 // };
+
+// if (!songs) {
+//     return null;
+// }
+//
+// function onPlayerReady() {
+//     console.log("player ready");
+//     player.playVideo();
+//     // player.loadPlaylist({
+//     //     listType: "playlist",
+//     //     list: songListString
+//     // });
+// }
+//
+// function onPlayerStateChange(event) {
+//     // console.log("player state change event: ", event);
+//     console.log("songs outside of conditional: ", songs);
+//
+//     if (event.data == 0) {
+//         console.log("songs in event = 0: ", songs);
+//         for (var i = 0; i < songs.length; i++) {
+//             songList.push(songs[i].id.videoId);
+//         }
+//         console.log("songList in iframeplayer: ", songList);
+//         playListIndex++;
+//         console.log(
+//             "video has stopped. Playlist index is: ",
+//             playListIndex
+//         );
+//         console.log("songlist in player state change: ", songList);
+//         console.log("songList[playListIndex]: ", songList[playListIndex]);
+//         player.loadVideoById(`${songList[playListIndex]}`);
+//     }
+// }

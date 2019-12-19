@@ -151,16 +151,20 @@ app.get("/api/:query", function(req, res) {
                 type: "video",
                 videoSyndicated: "true",
                 regionCode: "de",
-                maxResults: 25
+                maxResults: 30
             }
         };
+
         request(options2, function(err, response, body) {
             const bodyParsed2 = JSON.parse(body);
             // console.log("body2: ", bodyParsed2.items);
             let filteredResults = bodyParsed2.items.filter(
-                item => item.snippet.channelId !== "UCYi9TC1HC_U2kaRAK6I4FSQ"
+                item =>
+                    item.snippet.channelId !== "UCYi9TC1HC_U2kaRAK6I4FSQ" &&
+                    item.snippet.channelId !== "UCbqcG1rdt9LMwOJN4PyGTKg" &&
+                    item.snippet.channelId !== "UCwTRjvjVge51X-ILJ4i22ew"
             );
-            console.log("filteredresults: ", filteredResults);
+            // console.log("filteredresults: ", filteredResults);
             res.json(filteredResults);
         });
     });
