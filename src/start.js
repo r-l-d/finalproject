@@ -9,6 +9,9 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { Provider } from "react-redux";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+import Container from "@material-ui/core/Container";
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
 
 const theme = createMuiTheme({
     palette: {
@@ -24,7 +27,11 @@ const store = createStore(
 let elem;
 
 if (location.pathname == "/welcome") {
-    elem = <Welcome />;
+    elem = (
+        <ThemeProvider theme={theme}>
+            <Welcome />
+        </ThemeProvider>
+    );
 } else {
     elem = (
         <Provider store={store}>

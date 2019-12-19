@@ -7,6 +7,8 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
 
 export default class Registration extends React.Component {
     constructor(props) {
@@ -41,7 +43,7 @@ export default class Registration extends React.Component {
 
     handleChange(inputElement) {
         console.log(
-            "input field changed: ",
+            // "input field changed: ",
             inputElement.name,
             inputElement.value
         );
@@ -54,65 +56,90 @@ export default class Registration extends React.Component {
             <div>
                 <MenuAppBar />
                 <Container maxWidth="md">
-                    <Typography variant="h4">Register</Typography>
-
-                    {this.state.error && (
-                        <div className="error">Oops! Something went wrong.</div>
-                    )}
-                    <div className="flex">
-                        <TextField
-                            required
-                            label="First Name"
-                            name="first"
-                            type="text"
-                            margin="normal"
-                            variant="outlined"
-                            onChange={e => this.handleChange(e.target)}
-                        />
-                        <TextField
-                            required
-                            name="last"
-                            label="Last name"
-                            type="text"
-                            margin="normal"
-                            variant="outlined"
-                            onChange={e => this.handleChange(e.target)}
-                        />
-
-                        <TextField
-                            required
-                            name="email"
-                            label="Email"
-                            type="email"
-                            margin="normal"
-                            variant="outlined"
-                            onChange={e => this.handleChange(e.target)}
-                        />
-                        <TextField
-                            required
-                            name="password"
-                            label="Password"
-                            type="password"
-                            margin="normal"
-                            variant="outlined"
-                            onChange={e => this.handleChange(e.target)}
-                        />
-                    </div>
-                    <Button
-                        onClick={e => this.submit(e)}
-                        color="primary"
-                        variant="contained"
+                    <Grid
+                        container
+                        direction="column"
+                        justify="center"
+                        alignItems="stretch"
+                        spacing={2}
                     >
-                        SUBMIT
-                    </Button>
-                    <div>
-                        <Typography variant="subtitle1">
-                            Already registered?
-                        </Typography>
-                        <Link to="/login">
-                            <Button variant="contained">Log In</Button>
-                        </Link>
-                    </div>
+                        <Grid item xs={2}>
+                            <Typography variant="h4">Register</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            {this.state.error && (
+                                <div className="error">
+                                    Oops! Something went wrong.
+                                </div>
+                            )}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                className="welcomeTextField"
+                                required
+                                label="First Name"
+                                name="first"
+                                type="text"
+                                margin="normal"
+                                variant="outlined"
+                                onChange={e => this.handleChange(e.target)}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                className="welcomeTextField"
+                                required
+                                name="last"
+                                label="Last name"
+                                type="text"
+                                margin="normal"
+                                variant="outlined"
+                                onChange={e => this.handleChange(e.target)}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                className="welcomeTextField"
+                                required
+                                name="email"
+                                label="Email"
+                                type="email"
+                                margin="normal"
+                                variant="outlined"
+                                onChange={e => this.handleChange(e.target)}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                className="welcomeTextField"
+                                required
+                                name="password"
+                                label="Password"
+                                type="password"
+                                margin="normal"
+                                variant="outlined"
+                                onChange={e => this.handleChange(e.target)}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button
+                                className="welcomeTextField"
+                                onClick={e => this.submit(e)}
+                                color="primary"
+                                variant="contained"
+                            >
+                                SUBMIT
+                            </Button>
+                        </Grid>
+                        <Grid item xs={10}>
+                            <Typography variant="subtitle1">
+                                Already registered?
+                            </Typography>
+                            <Link to="/login">
+                                <Button variant="contained">Log In</Button>
+                            </Link>
+                        </Grid>
+                    </Grid>
                 </Container>
             </div>
         );

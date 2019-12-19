@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "@material-ui/core/Button";
 import { addFavorite } from "./actions";
+import Grid from "@material-ui/core/Grid";
 
 export default function IframePlayer() {
     // let videoId = props.videoId;
@@ -69,8 +70,8 @@ export default function IframePlayer() {
                 // console.log("videodata inside useEffect: ", videoData);
                 setPlayer(
                     new YT.Player("ytplayer", {
-                        height: "360",
-                        width: "640",
+                        height: "480",
+                        width: "854",
                         videoId: videoId,
                         events: {
                             onReady: function(event) {
@@ -162,12 +163,34 @@ export default function IframePlayer() {
         <div>
             <div id="ytplayer"></div>
             {videoId && (
-                <div>
-                    <Button onClick={nextSong}>Next Song</Button>
-                    <Button onClick={() => addToFavorites(player.l.videoData)}>
-                        Add to favorites
-                    </Button>
-                </div>
+                <Grid
+                    container
+                    direction="row"
+                    justify="center"
+                    // alignItems="center"
+                    spacing={3}
+                >
+                    <Grid item>
+                        <Button
+                            size="large"
+                            variant="outlined"
+                            color="primary"
+                            onClick={() => addToFavorites(player.l.videoData)}
+                        >
+                            Add to favorites
+                        </Button>
+                    </Grid>
+                    <Grid item>
+                        <Button
+                            size="large"
+                            variant="outlined"
+                            color="primary"
+                            onClick={nextSong}
+                        >
+                            Next Song
+                        </Button>
+                    </Grid>
+                </Grid>
             )}
         </div>
     );

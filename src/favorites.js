@@ -18,38 +18,71 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { borders } from "@material-ui/system";
 import TextField from "@material-ui/core/TextField";
 import { display } from "@material-ui/system";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import IconButton from "@material-ui/core/IconButton";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        padding: theme.spacing(1, 2),
-        margin: 10
+    // root: {
+    //     padding: theme.spacing(1, 2),
+    //     margin: 10
+    // },
+    // image: {
+    //     height: 70,
+    //     width: 70
+    // },
+
+    card: {
+        // height: 200,
+        width: 300,
+
+        margin: 10,
+        display: "flex"
     },
-    image: {
-        height: 70,
-        width: 70
+    // media: {
+    //     height: 150
+    // },
+    // typography: {
+    //     margin: 10
+    // },
+    // buttonBox: {
+    //     display: "flex",
+    //     justifyContent: "flex-start"
+    // alignItems: "flex-end"
+
+    details: {
+        display: "flex",
+        flexDirection: "column"
     },
-    favoritesContainer: {
-        background: "lightgrey",
-        height: 400,
-        overflow: "scroll",
-        // width: "25%",
-        // minWidth: 300,
-        border: 1,
-        borderColor: "black"
+    content: {
+        flex: "1 0 auto"
     },
-    paperComponent: {
-        marginLeft: 10
+    cover: {
+        width: 150
+        // cover: "fit"
+    },
+    controls: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        paddingLeft: theme.spacing(1),
+        paddingBottom: theme.spacing(1)
+    },
+    playIcon: {
+        height: 30,
+        width: 30
     }
 }));
 
 export default function Favorites() {
     const classes = useStyles();
+    const theme = useTheme();
     const dispatch = useDispatch();
     const favorites = useSelector(state => {
         return state.favorites;
@@ -65,60 +98,51 @@ export default function Favorites() {
 
     return (
         <div>
-            <div>
-                <Typography className={classes.typography} variant="h6">
-                    Favorites ({favorites.length})
-                </Typography>
-                <div className={classes.favoritesContainer}>
-                    {favorites &&
-                        favorites.map(favorite => (
-                            <Paper
-                                component="div"
-                                display="flex"
-                                className={classes.root}
-                                key={favorite.id}
-                            >
-                                <Box display="flex" alignItems="center">
-                                    <div>
-                                        <img
-                                            className={classes.image}
-                                            src={favorite.image_url}
+            <Typography className={classes.typography} variant="h6">
+                Favorites ({favorites.length})
+            </Typography>
+            <Box display="flex" flexWrap="wrap">
+                {favorites &&
+                    favorites.map(favorite => (
+                        <Card key={favorite.id} className={classes.card}>
+                            <div className={classes.details}>
+                                <CardContent className={classes.content}>
+                                    <Typography variant="body1">
+                                        {favorite.title}
+                                    </Typography>
+                                </CardContent>
+                                <div className="classes.controls">
+                                    <IconButton
+                                        color="primary"
+                                        onClick={e =>
+                                            dispatch(playNow(favorite.video_id))
+                                        }
+                                        aria-label="play/pause"
+                                    >
+                                        <PlayArrowIcon
+                                            className={classes.playIcon}
                                         />
-                                    </div>
-                                    <div className={classes.paperComponent}>
-                                        <div>
-                                            <Typography variant="body1">
-                                                {favorite.title}
-                                            </Typography>
-                                        </div>
-                                    </div>
-                                    <Box display="flex" flexDirection="column">
-                                        <Button
-                                            size="small"
-                                            onClick={e =>
-                                                dispatch(
-                                                    removeFavorite(favorite.id)
-                                                )
-                                            }
-                                        >
-                                            Remove
-                                        </Button>
-                                        <Button
-                                            size="small"
-                                            onClick={e =>
-                                                dispatch(
-                                                    playNow(favorite.video_id)
-                                                )
-                                            }
-                                        >
-                                            Play Now
-                                        </Button>
-                                    </Box>
-                                </Box>
-                            </Paper>
-                        ))}
-                </div>
-            </div>
+                                    </IconButton>
+                                    <IconButton
+                                        onClick={e =>
+                                            dispatch(
+                                                removeFavorite(favorite.id)
+                                            )
+                                        }
+                                    >
+                                        <HighlightOffIcon
+                                            className={classes.playIcon}
+                                        />
+                                    </IconButton>
+                                </div>
+                            </div>
+                            <CardMedia
+                                className={classes.cover}
+                                image={favorite.image_url}
+                            />
+                        </Card>
+                    ))}
+            </Box>
         </div>
     );
 }
@@ -154,7 +178,7 @@ export default function Favorites() {
 // ))}
 //
 // </Box>
-
+//
 // <Button
 // size="small"
 // onClick={e =>
@@ -163,3 +187,30 @@ export default function Favorites() {
 // >
 // Add to Queue
 // </Button>
+
+//
+//
+// <img
+// className={classes.image}
+// src={favorite.image_url}
+// />
+// </div>
+// <div className={classes.paperComponent}>
+// <div>
+// </div>
+// </div>
+// <Box display="flex" flexDirection="column">
+//
+// <Button
+// size="small"
+// onClick={e =>
+//     dispatch(
+//         playNow(favorite.video_id)
+//     )
+// }
+// >
+// Play Now
+// </Button>
+// </Box>
+// </Box>
+// </Paper>

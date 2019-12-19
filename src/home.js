@@ -177,8 +177,9 @@ export default function Home() {
                     </Grid>
 
                     <IframePlayer className={classes.videoPlayer} />
-
-                    <Grid item xs={3}>
+                </Grid>
+                <Grid container>
+                    <Grid item xs={10}>
                         <Favorites />
                     </Grid>
                 </Grid>

@@ -6,6 +6,8 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
 
 export default class Login extends React.Component {
     constructor(props) {
@@ -45,44 +47,68 @@ export default class Login extends React.Component {
             <div>
                 <MenuAppBar />
                 <Container maxWidth="md">
-                    <Typography variant="h4">Login</Typography>
-                    {this.state.error && (
-                        <div className="error">Oops! Something went wrong.</div>
-                    )}
-                    <form className="flex">
-                        <TextField
-                            required
-                            name="email"
-                            label="Email"
-                            type="email"
-                            margin="normal"
-                            variant="outlined"
-                            onChange={e => this.handleChange(e.target)}
-                        />
-                        <TextField
-                            name="password"
-                            label="Password"
-                            type="password"
-                            margin="normal"
-                            variant="outlined"
-                            onChange={e => this.handleChange(e.target)}
-                        />
-                    </form>
-                    <Button
-                        onClick={e => this.submit(e)}
-                        color="primary"
-                        variant="contained"
+                    <Grid
+                        container
+                        direction="column"
+                        justify="center"
+                        alignItems="stretch"
+                        spacing={2}
                     >
-                        SUBMIT
-                    </Button>
-                    <div>
-                        <Typography variant="subtitle1">
-                            Need to register?
-                        </Typography>
-                        <Button variant="contained" href="/">
-                            Register
-                        </Button>
-                    </div>
+                        <Grid item xs={2}>
+                            <Typography className="top" variant="h4">
+                                Login
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            {this.state.error && (
+                                <div className="error">
+                                    Oops! Something went wrong.
+                                </div>
+                            )}
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <TextField
+                                className="welcomeTextField"
+                                required
+                                name="email"
+                                label="Email"
+                                type="email"
+                                margin="normal"
+                                variant="outlined"
+                                onChange={e => this.handleChange(e.target)}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                className="welcomeTextField"
+                                name="password"
+                                label="Password"
+                                type="password"
+                                margin="normal"
+                                variant="outlined"
+                                onChange={e => this.handleChange(e.target)}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button
+                                className="welcomeTextField"
+                                onClick={e => this.submit(e)}
+                                color="primary"
+                                variant="contained"
+                            >
+                                SUBMIT
+                            </Button>
+                        </Grid>
+                        <div>
+                            <Typography variant="subtitle1">
+                                Need to register?
+                            </Typography>
+                            <Button variant="contained" href="/">
+                                Register
+                            </Button>
+                        </div>
+                    </Grid>
                 </Container>
             </div>
         );
