@@ -99,6 +99,27 @@ app.get("/user.json", async (req, res) => {
     }
 });
 
+// app.get("/api/:query", function(req, res) {
+//     let query = req.params.query;
+//     // console.log("query: ", query);
+//     const options = {
+//         url: "https://www.googleapis.com/youtube/v3/search",
+//         qs: {
+//             part: "snippet",
+//             q: query,
+//             key: secrets.API_KEY,
+//             videoEmbeddable: "true",
+//             type: "video",
+//             videoSyndicated: "true",
+//             regionCode: "de"
+//         }
+//     };
+//     console.log("options: ", options);
+//     request(options, function(err, response, body) {
+//         res.json(JSON.parse(body));
+//     });
+// });
+
 app.get("/api/:query", function(req, res) {
     let query = req.params.query;
     // console.log("query: ", query);
@@ -111,12 +132,37 @@ app.get("/api/:query", function(req, res) {
             videoEmbeddable: "true",
             type: "video",
             videoSyndicated: "true",
-            regionCode: "de"
+            regionCode: "de",
+            maxResults: 1
         }
     };
     console.log("options: ", options);
     request(options, function(err, response, body) {
-        res.json(JSON.parse(body));
+        const bodyParsed = JSON.parse(body);
+        // console.log("bodyParsed ", bodyParsed.items[0].id.videoId);
+        const videoId = bodyParsed.items[0].id.videoId;
+        const options2 = {
+            url: "https://www.googleapis.com/youtube/v3/search",
+            qs: {
+                part: "snippet",
+                relatedToVideoId: videoId,
+                key: secrets.API_KEY,
+                videoEmbeddable: "true",
+                type: "video",
+                videoSyndicated: "true",
+                regionCode: "de",
+                maxResults: 25
+            }
+        };
+        request(options2, function(err, response, body) {
+            const bodyParsed2 = JSON.parse(body);
+            // console.log("body2: ", bodyParsed2.items);
+            let filteredResults = bodyParsed2.items.filter(
+                item => item.snippet.channelId !== "UCYi9TC1HC_U2kaRAK6I4FSQ"
+            );
+            console.log("filteredresults: ", filteredResults);
+            res.json(filteredResults);
+        });
     });
 });
 

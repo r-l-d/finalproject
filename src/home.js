@@ -101,10 +101,10 @@ export default function Home() {
         try {
             // console.log("clicked on the button: ", query);
             const { data } = await axios.get(`/api/${query}`);
-            // console.log("data in home.js: ", data.items[0].id.videoId);
-            dispatch(setPlaylist(data.items));
-            console.log("data.items: ", data.items);
-            dispatch(playNow(data.items[0].id.videoId));
+            console.log("data in home.js: ", data);
+            dispatch(setPlaylist(data));
+            console.log("data.items: ", data);
+            dispatch(playNow(data[0].id.videoId));
             video = true;
             // setSongs(data.items);
             // setVideoId(data.items[0].id.videoId);
