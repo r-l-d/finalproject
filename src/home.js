@@ -53,7 +53,7 @@ const useStyles = makeStyles({
         alignItems: "center"
     },
     searchField: {
-        marginTop: 10,
+        // marginTop: 10,
         width: "100%"
     },
     videoPlayer: {
@@ -64,6 +64,11 @@ const useStyles = makeStyles({
     searchContainer: {
         marginTop: 30,
         marginBottom: 30
+    },
+    favoriteContainer: {
+        display: "flex",
+        justifyContent: "center",
+        marginTop: 10
     }
 });
 
@@ -74,6 +79,7 @@ export default function Home() {
     const [songs, setSongs] = useState([]);
     const [videoId, setVideoId] = useState("");
     const dispatch = useDispatch();
+    const [error, setError] = useState(false);
 
     // const songs = useSelector(state => state && state.songs);
 
@@ -103,9 +109,14 @@ export default function Home() {
 
     async function submit() {
         try {
+            setError(false);
             // console.log("clicked on the button: ", query);
-            const { data } = await axios.get(`/api/${query} karaoke`);
-            // console.log("data in home.js: ", data);
+            let { data } = await axios.get(`/api/${query} karaoke`);
+            console.log("data in home.js: ", data);
+            if (data.length == 0) {
+                setError(true);
+                return;
+            }
             dispatch(setPlaylist(data));
             // console.log("data.items: ", data);
             dispatch(playNow(data[0].id.videoId));
@@ -135,6 +146,7 @@ export default function Home() {
             <Container maxWidth="lg">
                 <div className={classes.searchContainer}>
                     <Grid
+                        className={classes.searchContainer}
                         container
                         direction="row"
                         alignItems="center"
@@ -165,6 +177,20 @@ export default function Home() {
                         </Grid>
                     </Grid>
                 </div>
+
+                {error && (
+                    <Grid container direction="row" justify="center">
+                        <Grid item xs={4} display="flex" justify="center">
+                            <Typography
+                                variant="h6"
+                                style={{ textAlign: "center" }}
+                            >
+                                NO RESULTS! Try a different search
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                )}
+
                 <Grid
                     container
                     direction="row"
@@ -178,16 +204,18 @@ export default function Home() {
 
                     <IframePlayer className={classes.videoPlayer} />
                 </Grid>
-                <Grid container>
+                <Grid container className={classes.favoriteContainer}>
                     <Grid item xs={10}>
                         <Favorites />
                     </Grid>
                 </Grid>
-                {/* {videoId && <Video videoId={videoId} songs={songs} />} */}
             </Container>
         </div>
     );
 }
+
+/* {videoId && <Video videoId={videoId} songs={songs} />} */
+
 // <MoreResults />
 
 // <Typography className={classes.typography} variant="h4">

@@ -128,7 +128,7 @@ app.get("/api/:query", function(req, res) {
         qs: {
             part: "snippet",
             q: query,
-            key: secrets.API_KEY2,
+            key: secrets.API_KEY,
             videoEmbeddable: "true",
             type: "video",
             videoSyndicated: "true",
@@ -146,27 +146,64 @@ app.get("/api/:query", function(req, res) {
             qs: {
                 part: "snippet",
                 relatedToVideoId: videoId,
-                key: secrets.API_KEY2,
+                key: secrets.API_KEY,
                 videoEmbeddable: "true",
                 type: "video",
                 videoSyndicated: "true",
                 regionCode: "de",
-                maxResults: 30
+                maxResults: 40
             }
         };
 
         request(options2, function(err, response, body) {
             const bodyParsed2 = JSON.parse(body);
-            // console.log("body2: ", bodyParsed2.items);
+            console.log("body2: ", bodyParsed2.items);
             let filteredResults = bodyParsed2.items.filter(
                 item =>
                     item.snippet.channelId !== "UCYi9TC1HC_U2kaRAK6I4FSQ" &&
                     item.snippet.channelId !== "UCbqcG1rdt9LMwOJN4PyGTKg" &&
-                    item.snippet.channelId !== "UCwTRjvjVge51X-ILJ4i22ew"
+                    item.snippet.channelId !== "UCwTRjvjVge51X-ILJ4i22ew" &&
+                    item.snippet.channelId !== "UCJ0uqCI0Vqr2Rrt1HseGirg" &&
+                    (item.snippet.title.toLowerCase().includes("karaoke") ||
+                        item.snippet.title.toLowerCase().includes("lyrics"))
             );
-            // console.log("filteredresults: ", filteredResults);
+            console.log("filteredresults: ", filteredResults);
             res.json(filteredResults);
         });
+    });
+});
+
+app.get("/api/more/:video_id", function(req, res) {
+    let videoId = req.params.video_id;
+    console.log("morelikethis: ", videoId);
+    const options = {
+        url: "https://www.googleapis.com/youtube/v3/search",
+        qs: {
+            part: "snippet",
+            relatedToVideoId: videoId,
+            key: secrets.API_KEY,
+            videoEmbeddable: "true",
+            type: "video",
+            videoSyndicated: "true",
+            regionCode: "de",
+            maxResults: 40
+        }
+    };
+    console.log("options: ", options);
+    request(options, function(err, response, body) {
+        const bodyParsed = JSON.parse(body);
+        // console.log("morelike this body: ", bodyParsed2.items);
+        let filteredResults = bodyParsed.items.filter(
+            item =>
+                item.snippet.channelId !== "UCYi9TC1HC_U2kaRAK6I4FSQ" &&
+                item.snippet.channelId !== "UCbqcG1rdt9LMwOJN4PyGTKg" &&
+                item.snippet.channelId !== "UCwTRjvjVge51X-ILJ4i22ew" &&
+                item.snippet.channelId !== "UCJ0uqCI0Vqr2Rrt1HseGirg" &&
+                (item.snippet.title.toLowerCase().includes("karaoke") ||
+                    item.snippet.title.toLowerCase().includes("lyrics"))
+        );
+        console.log("morelikethis filteredresults: ", filteredResults);
+        res.json(filteredResults);
     });
 });
 

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "@material-ui/core/Button";
-import { addFavorite } from "./actions";
+import { addFavorite, playNow, setPlaylist } from "./actions";
 import Grid from "@material-ui/core/Grid";
+import axios from "./axios";
 
 export default function IframePlayer() {
     // let videoId = props.videoId;
@@ -159,6 +160,19 @@ export default function IframePlayer() {
         );
     }
 
+    async function moreLikeThis(video_id) {
+        try {
+            console.log("more like this called for: ", video_id);
+            const { data } = await axios.get(`/api/more/${video_id}`);
+            console.log("data in from moreLikeThis: ", data);
+            dispatch(setPlaylist(data));
+            // console.log("data.items: ", data);
+            dispatch(playNow(data[0].id.videoId));
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     return (
         <div>
             <div id="ytplayer"></div>
@@ -185,9 +199,21 @@ export default function IframePlayer() {
                             size="large"
                             variant="outlined"
                             color="primary"
+                            onClick={() =>
+                                moreLikeThis(player.l.videoData.video_id)
+                            }
+                        >
+                            Play More Like This Song
+                        </Button>
+                    </Grid>
+                    <Grid item>
+                        <Button
+                            size="large"
+                            variant="outlined"
+                            color="primary"
                             onClick={nextSong}
                         >
-                            Next Song
+                            Play Next Song
                         </Button>
                     </Grid>
                 </Grid>
