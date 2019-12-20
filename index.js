@@ -128,7 +128,7 @@ app.get("/api/:query", function(req, res) {
         qs: {
             part: "snippet",
             q: query,
-            key: secrets.API_KEY,
+            key: secrets.API_KEY2,
             videoEmbeddable: "true",
             type: "video",
             videoSyndicated: "true",
@@ -146,7 +146,7 @@ app.get("/api/:query", function(req, res) {
             qs: {
                 part: "snippet",
                 relatedToVideoId: videoId,
-                key: secrets.API_KEY,
+                key: secrets.API_KEY2,
                 videoEmbeddable: "true",
                 type: "video",
                 videoSyndicated: "true",
@@ -181,7 +181,7 @@ app.get("/api/more/:video_id", function(req, res) {
         qs: {
             part: "snippet",
             relatedToVideoId: videoId,
-            key: secrets.API_KEY,
+            key: secrets.API_KEY2,
             videoEmbeddable: "true",
             type: "video",
             videoSyndicated: "true",

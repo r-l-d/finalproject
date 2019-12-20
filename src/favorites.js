@@ -104,7 +104,11 @@ export default function Favorites() {
             <Box display="flex" flexWrap="wrap">
                 {favorites &&
                     favorites.map(favorite => (
-                        <Card key={favorite.id} className={classes.card}>
+                        <Card
+                            raised="true"
+                            key={favorite.id}
+                            className={classes.card}
+                        >
                             <div className={classes.details}>
                                 <CardContent className={classes.content}>
                                     <Typography variant="body1">

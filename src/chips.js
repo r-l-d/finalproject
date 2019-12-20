@@ -46,7 +46,12 @@ export default function Chips(props) {
         { key: 13, label: "Alternative" },
         { key: 14, label: "Rap" },
         { key: 15, label: "Indie" },
-        { key: 16, label: "Disco" }
+        { key: 16, label: "Disco" },
+        { key: 17, label: "Reggae" },
+        { key: 18, label: "Blues" },
+        { key: 19, label: "Funk" },
+        { key: 20, label: "Metal" },
+        { key: 21, label: "R&B" }
     ]);
 
     const handleClick = input => {
